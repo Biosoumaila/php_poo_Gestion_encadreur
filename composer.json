@@ -1,0 +1,15 @@
+{
+    "name": "bahng/gestion_encadreur",
+    "autoload": {
+        "psr-4": {
+            "Bahng\\GestionEncadreur\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Biosoumaila",
+            "email": "soumaila.bahn-gobi-idrissou@epitech.eu"
+        }
+    ],
+    "require": {}
+}
