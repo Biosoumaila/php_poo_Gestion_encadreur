@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {
-            "Bahng\\TpPoo\\": "./"
+            "App\\": "c:/wamp64/www/bahn/TpPoo/"
         }
     },
     "authors": [

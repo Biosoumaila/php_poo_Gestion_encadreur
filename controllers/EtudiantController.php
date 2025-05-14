@@ -1,8 +1,8 @@
 <?php
+namespace App\Controllers;
+use App\Models\Etudiant;
 
-namespace Bahng\TpPoo\Controllers;
 
-use Bahng\TpPoo\Models\EtudiantModel;
 
 class EtudiantController
 {
@@ -12,7 +12,7 @@ class EtudiantController
 
     public function __construct($database)
     {
-        $this->etudiantModel = new EtudiantModel($database);
+        $this->etudiantModel = new Etudiant($database);
     }
 
     public function afficherListeEtudiants()
@@ -29,14 +29,14 @@ class EtudiantController
         $email = $data['email'];
         $filiere = $data['filiere'];
         $anneeFormation = $data['annee_formation'];
-        $motDePasse = password_hash($data['mot_de_passe'], PASSWORD_BCRYPT); // Hachage du mot de passe
+        $motDePasse = password_hash($data['mot_de_passe'], PASSWORD_BCRYPT);
 
         if ($this->etudiantModel->register($nom, $prenom, $email, $filiere, $anneeFormation, $motDePasse)) {
             $_SESSION['success_message'] = "Inscription réussie.";
-            header('Location: ?action=login');
+            header('Location: ?action=login_etudiant');
         } else {
-            $_SESSION['error_message'] = "L'inscription a échoué. L'email existe peut-être déjà.";
-            header('Location: ?action=register');
+            $_SESSION['error_message'] = "Erreur lors de l'inscription.";
+            header('Location: ?action=register_etudiant');
         }
         exit();
     }
@@ -47,14 +47,23 @@ class EtudiantController
         $email = $data['email'];
         $motDePasse = $data['mot_de_passe'];
 
+        // Rechercher l'étudiant par email
         $etudiant = $this->etudiantModel->findByEmail($email);
 
         if ($etudiant && password_verify($motDePasse, $etudiant['mot_de_passe'])) {
-            $_SESSION['etudiant'] = $etudiant;
-            header('Location: ?action=dashboard'); // Redirige vers le dashboard
+            // Initialiser la session avec les informations de l'étudiant
+            $_SESSION['etudiant'] = [
+                'id' => $etudiant['id'],
+                'nom' => $etudiant['nom'],
+                'prenom' => $etudiant['prenom'],
+                'email' => $etudiant['email'],
+                'filiere' => $etudiant['filiere'],
+                'annee_formation' => $etudiant['annee_formation']
+            ];
+            header('Location: ?action=dashboard_etudiant'); // Redirige vers le tableau de bord
         } else {
             $_SESSION['error_message'] = "Email ou mot de passe incorrect.";
-            header('Location: ?action=login');
+            header('Location: ?action=login_etudiant'); // Redirige vers la page de connexion
         }
         exit();
     }
@@ -63,7 +72,7 @@ class EtudiantController
     {
         session_start();
         session_destroy();
-        header('Location: ?action=login');
+        header('Location: ?action=login_etudiant');
         exit();
     }
 

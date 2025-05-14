@@ -1,7 +1,15 @@
 <?php
-
-$title = 'Inscription Étudiant';
-$headerTitle = 'Inscription';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+} // Démarre la session
+require_once __DIR__ . '/../../models/Encadreur.php';
+require_once __DIR__ . '/../../core/Database.php'; // Inclut le modèle Database
+require_once __DIR__ . '/../../controllers/EncadreurController.php'; // Inclut le contrôleur Encadreur
+use App\Models\Encadreur;
+use App\Models\Database;
+use App\Controllers\EncadreurController;
+$title = 'Inscription Encadreur';
+$headerTitle = 'Inscription Encadreur';
 
 ob_start();
 ?>
@@ -33,7 +41,7 @@ ob_start();
     }
 
     form {
-        margin-top: 0.5rem;
+        margin-top: 1rem;
     }
 
     input,
@@ -61,40 +69,25 @@ ob_start();
     button:hover {
         background-color: #0056b3;
     }
-
-    .switch {
-        margin-top: 1rem;
-    }
-
-    .switch a {
-        color: #007bff;
-        text-decoration: none;
-        font-size: 0.9rem;
-    }
-
-    .switch a:hover {
-        text-decoration: underline;
-    }
 </style>
 <div class="container">
-    <h1>Inscription Étudiant</h1>
-    <form method="POST" action="?action=register_etudiant">
+    <h1>Inscription Encadreur</h1>
+    <form method="POST" action="?action=register_encadreur">
         <input type="text" name="nom" placeholder="Nom" required>
         <input type="text" name="prenom" placeholder="Prénom" required>
         <input type="email" name="email" placeholder="Email" required>
-        <select name="filiere" required>
-            <option value="filiere" disabled selected>Choisissez une filière</option>
-            <option value="filiere">AL</option>
-            <option value="filiere">SI</option>
-            <option value="filiere">SRC</option>
-        </select>
-        <input type="number" name="annee_formation" placeholder="Année de formation" required>
         <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
+        <select name="domaine" required>
+            <option value="AI">AL</option>
+            <option value="SI">SI</option>
+            <option value="SRC">SRC</option>
+            <option value="SRC&&AL">SRC et AL</option>
+            <option value="SRC&&SI">SRC et SI</option>
+            <option value="AL&&SI">AL et SI</option>
+            <option value="SI&&AL&&SI"> SI et AL et SI</option>
+        </select>
         <button type="submit">S'inscrire</button>
     </form>
-    <div class="switch">
-        <p>Déjà inscrit ? <a href="?action=login_etudiant">Se connecter</a></p>
-    </div>
 </div>
 <?php
 $content = ob_get_clean();

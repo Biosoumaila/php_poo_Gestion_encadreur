@@ -1,4 +1,5 @@
 <?php
+
 $title = 'Liste des Encadreurs';
 $headerTitle = 'Liste des Encadreurs';
 
@@ -69,6 +70,8 @@ tbody tr:last-child td {
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Email</th>
+                <th>Domaine</th>
+                <th>Date d'inscription</th>
             </tr>
         </thead>
         <tbody>
@@ -78,6 +81,8 @@ tbody tr:last-child td {
                 <td><?= htmlspecialchars($encadreur['nom']) ?></td>
                 <td><?= htmlspecialchars($encadreur['prenom']) ?></td>
                 <td><?= htmlspecialchars($encadreur['email']) ?></td>
+                <td><?= htmlspecialchars($encadreur['domaine']) ?></td>
+                <td><?= htmlspecialchars($encadreur['date_inscription']) ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
