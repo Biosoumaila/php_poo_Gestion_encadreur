@@ -41,17 +41,14 @@ class EtudiantController
         exit();
     }
 
-
     public function login($data)
     {
         $email = $data['email'];
         $motDePasse = $data['mot_de_passe'];
 
-        // Rechercher l'étudiant par email
         $etudiant = $this->etudiantModel->findByEmail($email);
 
         if ($etudiant && password_verify($motDePasse, $etudiant['mot_de_passe'])) {
-            // Initialiser la session avec les informations de l'étudiant
             $_SESSION['etudiant'] = [
                 'id' => $etudiant['id'],
                 'nom' => $etudiant['nom'],
@@ -60,10 +57,10 @@ class EtudiantController
                 'filiere' => $etudiant['filiere'],
                 'annee_formation' => $etudiant['annee_formation']
             ];
-            header('Location: ?action=dashboard_etudiant'); // Redirige vers le tableau de bord
+            header('Location: ?action=dashboard_etudiant');
         } else {
             $_SESSION['error_message'] = "Email ou mot de passe incorrect.";
-            header('Location: ?action=login_etudiant'); // Redirige vers la page de connexion
+            header('Location: ?action=login_etudiant');
         }
         exit();
     }

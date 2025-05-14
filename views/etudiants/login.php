@@ -64,7 +64,7 @@ ob_start();
             <?= $error ?>
         </p>
     <?php endif; ?>
-    <form method="POST" action="?action=dashboard_etudiant">
+    <form method="POST" action="?action=login_etudiant">
         <input type="email" name="email" placeholder="Adresse e-mail" required>
         <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
         <button type="submit">Se connecter</button>

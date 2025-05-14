@@ -21,10 +21,10 @@ if (isset($_GET['action'])) {
     switch ($action) {
         case 'dashboard_etudiant':
             if (!isset($_SESSION['etudiant'])) {
-                header('Location: ?action=login_etudiant'); // Redirige vers la page de connexion si non connecté
+                header('Location: ?action=login_etudiant');
                 exit;
             }
-            require __DIR__ . '/../views/etudiants/dashboard.php'; // Charge la vue du tableau de bord
+            require __DIR__ . '/../views/etudiants/dashboard.php';
             break;
 
         case 'dashboard_encadreur':
@@ -68,7 +68,11 @@ if (isset($_GET['action'])) {
             break;
 
         case 'login_etudiant':
-            require __DIR__ . '/../views/etudiants/login.php'; // Créez ce fichier si nécessaire
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $etudiantController->login($_POST); // Va faire la redirection vers dashboard_etudiant si OK
+            } else {
+                require __DIR__ . '/../views/etudiants/login.php';
+            }
             break;
 
         case 'logout':

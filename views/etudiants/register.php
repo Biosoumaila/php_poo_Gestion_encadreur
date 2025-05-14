@@ -83,10 +83,10 @@ ob_start();
         <input type="text" name="prenom" placeholder="Prénom" required>
         <input type="email" name="email" placeholder="Email" required>
         <select name="filiere" required>
-            <option value="filiere" disabled selected>Choisissez une filière</option>
-            <option value="filiere">AL</option>
-            <option value="filiere">SI</option>
-            <option value="filiere">SRC</option>
+            <option value="" disabled selected>Choisissez une filière</option>
+            <option value="AL">AL</option>
+            <option value="SI">SI</option>
+            <option value="SRC">SRC</option>
         </select>
         <input type="number" name="annee_formation" placeholder="Année de formation" required>
         <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>

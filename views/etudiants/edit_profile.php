@@ -1,77 +1,31 @@
 <?php
-$title = 'Modifier le profil';
-$headerTitle = 'Modifier mes informations';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-ob_start();
+if (!isset($_SESSION['etudiant'])) {
+    header('Location: ?action=login_etudiant');
+    exit;
+}
+
+$etudiant = $_SESSION['etudiant'];
 ?>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
-
-h1 {
-    color: #007bff;
-    margin-bottom: 1rem;
-}
-
-form {
-    margin-top: 1rem;
-}
-
-input {
-    width: 100%;
-    padding: 0.8rem;
-    margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-button {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 1rem;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-</style>
-<div class="container">
-    <h1>Modifier mes informations</h1>
-    <form method="POST" action="?action=update_profile">
-        <input type="text" name="nom" value="<?= $_SESSION['etudiant']['nom']; ?>" required>
-        <input type="text" name="prenom" value="<?= $_SESSION['etudiant']['prenom']; ?>" required>
-        <input type="email" name="email" value="<?= $_SESSION['etudiant']['email']; ?>" required>
-        <input type="text" name="filiere" value="<?= $_SESSION['etudiant']['filiere']; ?>" required>
-        <input type="number" name="annee_formation" value="<?= $_SESSION['etudiant']['annee_formation']; ?>" required>
-        <button type="submit">Mettre à jour</button>
+<div class="info">
+    <h2>Bienvenue, <?= $_SESSION['etudiant']['prenom'] . ' ' . $_SESSION['etudiant']['nom']; ?> !</h2>
+    <p><strong>Email :</strong> <?= $_SESSION['etudiant']['email']; ?></p>
+    <p><strong>Filière :</strong> <?= $_SESSION['etudiant']['filiere']; ?></p>
+    <p><strong>Année de formation :</strong> <?= $_SESSION['etudiant']['annee_formation']; ?></p>
+</div>
+<div class="actions">
+    <h3>Soumettre votre cahier de charge</h3>
+    <form method="POST" action="?action=soumettre_cahier" enctype="multipart/form-data">
+        <input type="text" name="nom_binome" placeholder="Nom du binôme (facultatif)">
+        <input type="file" name="cahier_de_charge" required>
+        <button type="submit">Soumettre</button>
     </form>
+    <button type="submit" class="logout-button">Se déconnecter</button>
 </div>
 <?php
-$content = ob_get_clean();
-require __DIR__ . '/../layout.php';
+$content = ob_get_clean(); // Capture le contenu et le stocke dans $content
+require __DIR__ . '/../layout.php'; // Inclut le layout
 ?>
