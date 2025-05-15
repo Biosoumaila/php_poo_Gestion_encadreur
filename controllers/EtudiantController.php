@@ -64,7 +64,10 @@ class EtudiantController
         }
         exit();
     }
-
+    public function getModel()
+    {
+        return $this->etudiantModel;
+    }
     public function logout()
     {
         session_start();

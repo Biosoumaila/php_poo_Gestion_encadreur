@@ -20,6 +20,11 @@ class EncadreurController
         require __DIR__ . '/../views/encadreurs/listeEncadreurs.php';
     }
 
+    public function getModel()
+    {
+        return $this->encadreurModel;
+    }
+
     public function register($data)
     {
         $nom = $data['nom'];

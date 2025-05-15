@@ -11,9 +11,8 @@ use App\Models\Etudiant;
 use App\Models\Database;
 use App\Controllers\EncadreurController;
 
-$title = 'Page d\'accueil';
-$headerTitle = 'Bienvenue sur l\'application de gestion';
-
+$title = "Page d'accueil";
+$headerTitle = "Bienvenue sur l'application de gestion";
 ob_start();
 ?>
 <!DOCTYPE html>
@@ -21,140 +20,132 @@ ob_start();
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
     <style>
-        /* Styles généraux */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            overflow-x: hidden;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
 
-        /* Barre de navigation */
-        .navbar {
-            background-color: #007bff;
-            color: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+    .container {
+        max-width: 500px;
+        margin: 5rem auto;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 2rem;
+        text-align: center;
+    }
 
-        .navbar h1 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
+    .main-btn,
+    .role-btn,
+    .action-btn {
+        display: block;
+        width: 100%;
+        margin: 1rem 0;
+        padding: 1rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 5px;
+        background: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin-left: 1rem;
-            font-size: 1rem;
-        }
+    .main-btn:hover,
+    .role-btn:hover,
+    .action-btn:hover {
+        background: #0056b3;
+    }
 
-        .navbar a:hover {
-            text-decoration: underline;
-        }
+    .hidden {
+        display: none;
+    }
 
-        /* Conteneur principal */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            gap: 2rem;
-        }
-
-        /* Sections */
-        .section {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        .section h2 {
-            color: #007bff;
-            margin-bottom: 1rem;
-        }
-
-        .section p {
-            font-size: 1rem;
-            color: #333;
-            margin-bottom: 1rem;
-        }
-
-        .section a {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .section a:hover {
-            background-color: #0056b3;
-        }
-
-        /* Barre de défilement */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #007bff;
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0056b3;
-        }
+    .role-actions {
+        margin-top: 1rem;
+    }
     </style>
 </head>
 
 <body>
-    <!-- Barre de navigation -->
-    <div class="navbar">
-        <h1><?= $headerTitle ?></h1>
-        <div>
-            <a href="?action=register_etudiant">Inscription Etudiant</a>
-            <a href="?action=login_etudiant">connexion Etudiant</a>
-            <a href="?action=register_encadreur">Inscription encadreur</a>
-            <a href="?action=login_encadreur">connexion encadreur</a>
-
-        </div>
-    </div>
-
-    <!-- Contenu principal -->
     <div class="container">
-        <div class="section">
-            <h2>Gestion des étudiants</h2>
-            <p>Accédez à la liste des étudiants et gérez leurs informations.</p>
-            <a href="?action=liste_etudiants">Voir les étudiants</a>
+        <h1><?= $headerTitle ?></h1>
+        <button class="main-btn" id="showRoleList">Connexion</button>
+
+        <div id="roleList" class="hidden">
+            <button class="role-btn" onclick="showActions('etudiant')">Étudiant</button>
+            <button class="role-btn" onclick="showActions('encadreur')">Encadreur</button>
+            <button class="role-btn" onclick="showActions('admin')">Administrateur</button>
+            <button class="role-btn" onclick="hideAll()">Retour</button>
         </div>
-        <div class="section">
-            <h2>Encadreurs</h2>
-            <a href="?action=register_encadreur">S'inscrire</a>
-            <a href="?action=login_encadreur" style="margin-top: 1rem;">Se connecter</a>
+
+        <div class="role-actions hidden" id="etudiantActions">
+            <button class="action-btn" onclick="window.location='?action=login_etudiant'">Se connecter
+                (Étudiant)</button>
+            <button class="action-btn" onclick="window.location='?action=register_etudiant'">S'inscrire
+                (Étudiant)</button>
+            <button class="action-btn" onclick="backToRoleList()">Retour</button>
         </div>
-        <div class="section">
-            <h2>Étudiants</h2>
-            <a href="?action=register_etudiant">S'inscrire</a>
-            <a href="?action=login_etudiant" style="margin-top: 1rem;">Se connecter</a>
+        <div class="role-actions hidden" id="encadreurActions">
+            <button class="action-btn" onclick="window.location='?action=login_encadreur'">Se connecter
+                (Encadreur)</button>
+            <button class="action-btn" onclick="window.location='?action=register_encadreur'">S'inscrire
+                (Encadreur)</button>
+            <button class="action-btn" onclick="backToRoleList()">Retour</button>
+        </div>
+        <div class="role-actions hidden" id="adminActions">
+            <button class="action-btn" onclick="window.location='?action=login_admin'">Se connecter
+                (Administrateur)</button>
+            <button class="action-btn" onclick="window.location='?action=register_admin'">S'inscrire
+                (Administrateur)</button>
+
+            <button class="action-btn" onclick="backToRoleList()">Retour</button>
         </div>
     </div>
+    <script>
+    const showRoleListBtn = document.getElementById('showRoleList');
+    const roleList = document.getElementById('roleList');
+    const etudiantActions = document.getElementById('etudiantActions');
+    const encadreurActions = document.getElementById('encadreurActions');
+    const adminActions = document.getElementById('adminActions');
+
+    showRoleListBtn.onclick = function() {
+        showRoleListBtn.classList.add('hidden');
+        roleList.classList.remove('hidden');
+        etudiantActions.classList.add('hidden');
+        encadreurActions.classList.add('hidden');
+        adminActions.classList.add('hidden');
+    };
+
+    function showActions(role) {
+        roleList.classList.add('hidden');
+        etudiantActions.classList.add('hidden');
+        encadreurActions.classList.add('hidden');
+        adminActions.classList.add('hidden');
+        if (role === 'etudiant') etudiantActions.classList.remove('hidden');
+        if (role === 'encadreur') encadreurActions.classList.remove('hidden');
+        if (role === 'admin') adminActions.classList.remove('hidden');
+    }
+
+    function backToRoleList() {
+        roleList.classList.remove('hidden');
+        etudiantActions.classList.add('hidden');
+        encadreurActions.classList.add('hidden');
+        adminActions.classList.add('hidden');
+    }
+
+    function hideAll() {
+        roleList.classList.add('hidden');
+        showRoleListBtn.classList.remove('hidden');
+        etudiantActions.classList.add('hidden');
+        encadreurActions.classList.add('hidden');
+        adminActions.classList.add('hidden');
+    }
+    </script>
 </body>
 
 </html>

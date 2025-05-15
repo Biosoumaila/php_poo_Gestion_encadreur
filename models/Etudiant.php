@@ -121,4 +121,12 @@ class Etudiant
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function setEncadreur($etudiantId, $encadreurId)
+    {
+        $stmt = $this->db->prepare("UPDATE etudiants SET encadreur_id = :encadreur_id WHERE id = :etudiant_id");
+        $stmt->bindParam(':encadreur_id', $encadreurId);
+        $stmt->bindParam(':etudiant_id', $etudiantId);
+        return $stmt->execute();
+    }
+
 }

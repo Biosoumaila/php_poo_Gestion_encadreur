@@ -51,4 +51,18 @@ class Encadreur
 
         return $query->execute();
     }
+
+    public function setEtudiant($encadreurId, $etudiantId)
+    {
+        $stmt = $this->db->prepare("UPDATE encadreurs SET etudiant_id = :etudiant_id WHERE id = :encadreur_id");
+        $stmt->bindParam(':etudiant_id', $etudiantId);
+        $stmt->bindParam(':encadreur_id', $encadreurId);
+        return $stmt->execute();
+    }
+    public function getAllEncadreurs()
+    {
+        $query = "SELECT * FROM encadreurs";
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
