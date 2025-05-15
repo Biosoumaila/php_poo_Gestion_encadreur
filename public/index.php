@@ -124,6 +124,12 @@ if (isset($_GET['action'])) {
             }
             break;
 
+        case 'soumettre_cahier_de_charge':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $etudiantController->soumettreCahierDeCharge($_POST, $_FILES);
+            }
+            break;
+
         case 'logout':
             session_start();
             session_destroy();

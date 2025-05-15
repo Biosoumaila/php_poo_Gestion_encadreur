@@ -20,6 +20,8 @@ class Etudiant
     {
         if ($database) {
             $this->db = $database->getConnection();
+            // $this->adminModel = new Administrateur($database);
+            // $this->etudiantModel = new Etudiant($database);
         }
     }
 
@@ -126,6 +128,16 @@ class Etudiant
         $stmt = $this->db->prepare("UPDATE etudiants SET encadreur_id = :encadreur_id WHERE id = :etudiant_id");
         $stmt->bindParam(':encadreur_id', $encadreurId);
         $stmt->bindParam(':etudiant_id', $etudiantId);
+        return $stmt->execute();
+    }
+    public function soumettreCahierDeCharge($etudiantId, $nomBinome, $fileName)
+    {
+        $query = "INSERT INTO cahiers_charges (etudiant_id, nom_binome, fichier) VALUES (:etudiant_id, :nom_binome, :fichier)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':etudiant_id', $etudiantId);
+        $stmt->bindParam(':nom_binome', $nomBinome);
+        $stmt->bindParam(':fichier', $fileName);
+
         return $stmt->execute();
     }
 

@@ -7,10 +7,14 @@ use PDO;
 class Encadreur
 {
     private $db;
+    private $encadreurModel;
 
     public function __construct($database)
     {
         $this->db = $database->getConnection();
+        // $this->encadreurModel = new Encadreur($database);
+        // $this->adminModel = new Administrateur($database);
+        // $this->etudiantModel = new Etudiant($database);
     }
 
     public function getAll()

@@ -77,26 +77,21 @@ class EtudiantController
     }
 
 
-
     public function soumettreCahierDeCharge($data, $files)
     {
         $etudiantId = $_SESSION['etudiant']['id'];
         $nomBinome = $data['nom_binome'] ?? null;
 
-        // Vérifiez si un fichier a été téléversé
-        if (isset($files['cahiers_charges']) && $files['cahiers_charges']['error'] === UPLOAD_ERR_OK) {
+        if (isset($files['cahier_de_charge']) && $files['cahier_de_charge']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = __DIR__ . '/../uploads/';
-            $fileName = uniqid() . '_' . basename($files['cahiers_charges']['name']);
+            $fileName = uniqid() . '_' . basename($files['cahier_de_charge']['name']);
             $filePath = $uploadDir . $fileName;
 
-            // Créez le dossier d'upload s'il n'existe pas
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
 
-            // Déplacez le fichier téléversé dans le dossier d'upload
-            if (move_uploaded_file($files['cahiers_charges']['tmp_name'], $filePath)) {
-                // Enregistrez les informations dans la base de données
+            if (move_uploaded_file($files['cahier_de_charge']['tmp_name'], $filePath)) {
                 if ($this->etudiantModel->soumettreCahierDeCharge($etudiantId, $nomBinome, $fileName)) {
                     $_SESSION['success_message'] = "Cahier de charge soumis avec succès.";
                 } else {
@@ -109,7 +104,7 @@ class EtudiantController
             $_SESSION['error_message'] = "Aucun fichier valide n'a été téléversé.";
         }
 
-        header('Location: ?action=dashboard');
+        header('Location: ?action=dashboard_etudiant');
         exit();
     }
 

@@ -1,14 +1,19 @@
 <?php
 namespace App\Controllers;
 use App\Models\Administrateur;
+use App\Models\Etudiant;
 
 class AdministrateurController
 {
     private $adminModel;
+    private $etudiantModel;
+    private $db;
 
     public function __construct($database)
     {
+        $this->db = $database->getConnection();
         $this->adminModel = new Administrateur($database);
+        $this->etudiantModel = new Etudiant($database);
     }
 
     public function login($data)
